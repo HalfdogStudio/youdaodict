@@ -4,23 +4,10 @@
 // @version        1.0
 // @namespace      youdao
 // @author         Liu Yuyang(sa@linuxer.me)
-// @description    一个屏幕取词脚本
+// @description    一个可以在浏览器中自由使用的屏幕取词脚本
 // @include        *
 // @grant          GM_xmlhttpRequest
 // ==/UserScript==
-//
-// 我碰到几个问题
-// 1. scriptish GM_xmlhttpRequest 经检查请求能正常发出接收，onload回调没能触发。我特么google了半天翻遍了gm的wiki，scriptish的wiki和github issue，stackoverflow上的问答。最后换了GreaseMonkey终于可以了。。。
-// 2. 然后发现GM_log不能用。。。不grant连报错都没有都不运行。。grant也没个反应。。。
-// 3. 忘记xmlhttpRequest的异步性质了，特么在回调中改写闭包中的值，而闭包中的值undefined在回调完成前就返回了。好在这种问题不像第一个这么纠结，只是js的特性而已。
-// [DONE】
-// 美化和安排显示些什么东西，我应该简单版还是复杂版？
-// 如果时简单版本，那就设置下样式只显示这些就好
-// 如果时复杂版本，如果有单词释义(basic)且errorCode为0，显示音标、详细释义，就不显示简单版本了？
-// 判断屏幕边界更好放置弹窗。
-// TODO
-// 像github这种网站会禁止第三方媒体链入(CSP)，所以就算有道可以用https访问也会被浏览器block掉
-//
 
 window.document.body.addEventListener("mouseup", translate, false);
 
@@ -56,7 +43,6 @@ function translate(e) {
     var youdaoWindow = document.createElement('div');
     youdaoWindow.classList.toggle("youdaoPopup");
     // parse 
-    // 1. trans 
     var dictJSON = JSON.parse(result);
     console.log(dictJSON);
     var query = dictJSON['query'];
@@ -78,14 +64,10 @@ function translate(e) {
     youdaoWindow.style.opacity = "0.9"
     youdaoWindow.style.width = "200px";
     youdaoWindow.style.wordWrap = "break-word";
-    // I can judge border conditions here, but TODO 
-    // FIXME bad hack:(
     youdaoWindow.style.left = mx + 10 + "px";
     if (mx + 200 + 30 >= window.innerWidth) {
       youdaoWindow.style.left = parseInt(youdaoWindow.style.left) - 200 + "px";
     }
-    //console.log(my, window.innerHeight)
-    //console.log(youdaoWindow.offsetHeight)
     if (my + youdaoWindow.offsetHeight + 30 >= window.innerHeight) {
       youdaoWindow.style.bottom = "20px";
     } else {
@@ -96,18 +78,32 @@ function translate(e) {
 
     function word() {
 
-      // play
       function play(word) {
-        var soundUrl = `https://dict.youdao.com/dictvoice?type=2&audio=${word}`
-        //console.log(soundUrl);
-        // remove legacy
-        var dummySound = document.querySelector('.youdao_hidden_sound')
-        if (!dummySound) {
-          dummySound = document.createElement('span');
-          dummySound.classList.toggle("youdao_hidden_sound");
+        //console.log("[DEBUG] PLAYOUND")
+
+        function playSound(buffer) {
+          var source = context.createBufferSource();
+          source.buffer = buffer;
+          source.connect(context.destination);
+          source.start(0);
         }
-        dummySound.innerHTML = `<audio src="${soundUrl}" preload="auto" hidden="true" autoplay="true">`;
-        header.appendChild(dummySound);
+
+        var context = new AudioContext()
+        var soundUrl = `https://dict.youdao.com/dictvoice?type=2&audio=${word}`
+        var ret = GM_xmlhttpRequest({
+          method: "GET",
+          url: soundUrl,
+          responseType: 'arraybuffer',
+          onload: function(res) {
+            try {
+              context.decodeAudioData(res.response, function(buffer) {
+                playSound(buffer);
+              })
+            } catch(e) {
+              console.log(e.message);
+            }
+          }
+        })
       }
 
       var basic = dictJSON['basic'];
@@ -177,11 +173,10 @@ function translate(e) {
   function translate(word, ts) {
     var reqUrl = `http://fanyi.youdao.com/openapi.do?type=data&doctype=json&version=1.1&relatedUrl=http%3A%2F%2Ffanyi.youdao.com%2F%23&keyfrom=fanyiweb&key=null&translate=on&q=${word}&ts=${ts}`
     //console.log("request url: ", reqUrl);
-    // scriptish: 确实发出了，但是？为啥onload没用？
     var ret = GM_xmlhttpRequest({
       method: "GET",
       url: reqUrl,
-      headers: {"Accept": "application/json"},  //这句没啥用
+      headers: {"Accept": "application/json"},  // can be omitted...
       onreadystatechange: function(res) {
         //console.log("Request state changed to: " + res.readyState);
       },
