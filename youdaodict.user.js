@@ -55,6 +55,7 @@ function translate(e) {
     // main window
     // first insert into dom then there is offsetHeight！IMPORTANT！
     document.body.appendChild(youdaoWindow);
+    youdaoWindow.style.color = "black";
     youdaoWindow.style.textAlign = "left";
     youdaoWindow.style.display = "block";
     youdaoWindow.style.position = "fixed";
@@ -147,6 +148,10 @@ function translate(e) {
       basic['explains'].map(function(trans) {
         var li = document.createElement('li');
         li.style.listStyle = "none";
+        li.style.margin = "0";
+        li.style.padding = "0";
+        li.style.background = "none";
+        li.style.color = "inherit";
         li.appendChild(document.createTextNode(trans));
         ul.appendChild(li);
       })
@@ -162,6 +167,10 @@ function translate(e) {
       dictJSON['translation'].map(function(trans) {
         var li = document.createElement('li');
         li.style.listStyle = "none";
+        li.style.margin = "0";
+        li.style.padding = "0";
+        li.style.background = "none";
+        li.style.color = "inherit";
         li.appendChild(document.createTextNode(trans));
         ul.appendChild(li);
       })
