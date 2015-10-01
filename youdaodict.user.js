@@ -27,6 +27,10 @@ function translate(e) {
     if (word == "") {
       return;
     }
+    // linebreak wordwrap, optimize for pdf.js
+    word = word.replace('-\n','');
+    // multiline selection, optimize for pdf.js
+    word = word.replace('\n', ' ');
     //console.log("word:", word);
     var ts = new Date().getTime();
     //console.log("time: ", ts);
