@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id             youdaodict-greasemonkey-reverland-2015-09-26
 // @name           youdaodict
-// @version        1.0
+// @version        1.1
 // @namespace      youdao
 // @author         Liu Yuyang(sa@linuxer.me)
 // @description    一个可以在浏览器中自由使用的屏幕取词脚本
