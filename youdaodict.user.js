@@ -1,7 +1,7 @@
 // ==UserScript==
 // @id             youdaodict-greasemonkey-reverland-2015-09-26
 // @name           youdaodict
-// @version        1.2
+// @version        1.3
 // @namespace      youdao
 // @author         Liu Yuyang(sa@linuxer.me)
 // @description    一个可以在浏览器中自由使用的屏幕取词脚本
@@ -9,27 +9,28 @@
 // @grant          GM_xmlhttpRequest
 // ==/UserScript==
 
-window.document.body.addEventListener("mouseup", callbackWrapper, false);
+window.document.body.addEventListener("mouseup", translate, false);
+window.document.body.addEventListener("keyup", toggleYoudao, false);
+var toggle = true;
 
-var timeout;
-function callbackWrapper(e) {
+function toggleYoudao(e) {
+  if (e.which == 81 && e.altKey && e.ctrlKey) {
+    if (toggle) {
+      window.document.body.removeEventListener("mouseup", translate, false);
+      toggle = false;
+    } else {
+      window.document.body.addEventListener("mouseup", translate, false);
+      toggle = true;
+    }
+  }
+}
+
+function translate(e) {
   // remove previous .youdaoPopup if exists
   var previous = document.querySelector(".youdaoPopup");
   if (previous) {
     document.body.removeChild(previous);
   }
-  // quick fix. with ctrl key held
-  if (!e.ctrlKey) {
-    return;
-  }
-  // debouncing
-  clearTimeout(timeout);
-  timeout = setTimeout(function(){
-    translate(e);
-  }, 120);
-}
-
-function translate(e) {
   //console.log("translate start");
   var selectObj = document.getSelection()
 
