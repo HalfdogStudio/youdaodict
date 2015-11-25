@@ -1,24 +1,35 @@
 // ==UserScript==
 // @id             youdaodict-greasemonkey-reverland-2015-09-26
 // @name           youdaodict
-// @name:zh-CN     有道取词
-// @version        1.0
+// @version        1.2
 // @namespace      youdao
 // @author         Liu Yuyang(sa@linuxer.me)
-// @description    Translate any text selected into a tooltip
-// @description:zh-cn    一个可以在浏览器中自由使用的屏幕取词脚本
+// @description    一个可以在浏览器中自由使用的屏幕取词脚本
 // @include        *
 // @grant          GM_xmlhttpRequest
 // ==/UserScript==
 
-window.document.body.addEventListener("mouseup", translate, false);
+window.document.body.addEventListener("mouseup", callbackWrapper, false);
 
-function translate(e) {
+var timeout;
+function callbackWrapper(e) {
   // remove previous .youdaoPopup if exists
   var previous = document.querySelector(".youdaoPopup");
   if (previous) {
     document.body.removeChild(previous);
   }
+  // quick fix. with ctrl key held
+  if (!e.ctrlKey) {
+    return;
+  }
+  // debouncing
+  clearTimeout(timeout);
+  timeout = setTimeout(function(){
+    translate(e);
+  }, 120);
+}
+
+function translate(e) {
   //console.log("translate start");
   var selectObj = document.getSelection()
 
@@ -97,20 +108,25 @@ function translate(e) {
 
         var context = new AudioContext()
         var soundUrl = `https://dict.youdao.com/dictvoice?type=2&audio=${word}`
-        var ret = GM_xmlhttpRequest({
-          method: "GET",
-          url: soundUrl,
-          responseType: 'arraybuffer',
-          onload: function(res) {
-            try {
-              context.decodeAudioData(res.response, function(buffer) {
-                playSound(buffer);
-              })
-            } catch(e) {
-              console.log(e.message);
+        var p = new Promise(function(resolve, reject) {
+          var ret = GM_xmlhttpRequest({
+            method: "GET",
+            url: soundUrl,
+            responseType: 'arraybuffer',
+            onload: function(res) {
+              try {
+                context.decodeAudioData(res.response, function(buffer) {
+                  resolve(buffer);
+                })
+              } catch(e) {
+                reject(e);
+              }
             }
-          }
-        })
+          });
+        });
+        p.then(playSound, function(e) {
+          console.log(e);
+        });
       }
 
       var basic = dictJSON['basic'];
