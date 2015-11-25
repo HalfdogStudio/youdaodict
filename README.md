@@ -16,10 +16,30 @@ Inspired by Google Translation Tooltip. The data come from the honored [Youdao](
 4. Simple and user-friendly design.
 5. Real-time multilingual online translation.
 
+## Notes
+
+Script is enabled by default. you can change:
+
+    var toggle = true;
+
+to:
+
+    var toggle = false;
+
+to disabled this script initially.
+
+Using <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>q</kbd> to enable/disable this script.
+
+
 ## Why
 
 The main reason is: Google translation tooltip can't work properly in China.
 
 [More info on this article(in Chinese)](http://www.jianshu.com/p/b984d149ee48)
 
+## ChangeLog
+
+### 20151125
+
+- <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>q</kbd> to disable/enable this script.
 
