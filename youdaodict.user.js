@@ -1,10 +1,12 @@
 // ==UserScript==
 // @id             youdaodict-greasemonkey-reverland-2015-09-26
 // @name           youdaodict
+// @name:zh-CN     有道取词
 // @version        1.3
 // @namespace      youdao
 // @author         Liu Yuyang(sa@linuxer.me)
-// @description    一个可以在浏览器中自由使用的屏幕取词脚本
+// @description    Translate any text selected into a tooltip
+// @description:zh-cn    一个可以在浏览器中自由使用的屏幕取词脚本
 // @include        *
 // @grant          GM_xmlhttpRequest
 // ==/UserScript==
