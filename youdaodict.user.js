@@ -110,7 +110,7 @@ function translate(e) {
         }
 
         var context = new AudioContext();
-        var soundUrl = `https://dict.youdao.com/dictvoice?type=2&audio=${word}`
+        var soundUrl = `https://dict.youdao.com/dictvoice?type=2&audio=${word}`;
         var p = new Promise(function(resolve, reject) {
           var ret = GM_xmlhttpRequest({
             method: "GET",
