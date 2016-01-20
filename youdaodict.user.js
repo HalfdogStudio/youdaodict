@@ -149,9 +149,10 @@ function translate(e) {
         header.appendChild(phoneticNode);
         phoneticNode.addEventListener('mouseup', function(e){
           if (e.target === phoneticNode) {
+            e.stopPropagation();
+            play(query);
           }
-          e.stopPropagation();
-          play(query)}, false);
+        }, false);
       }
       header.style.color = "darkBlue";
       header.style.margin = "0";
