@@ -34,7 +34,7 @@ function translate(e) {
     document.body.removeChild(previous);
   }
   //console.log("translate start");
-  var selectObj = document.getSelection()
+  var selectObj = document.getSelection();
 
   // if #text node
   if (selectObj.anchorNode.nodeType == 3) {
@@ -62,7 +62,7 @@ function translate(e) {
     //console.log("popup window!")
     var youdaoWindow = document.createElement('div');
     youdaoWindow.classList.toggle("youdaoPopup");
-    // parse 
+    // parse
     var dictJSON = JSON.parse(result);
     console.log(dictJSON);
     var query = dictJSON['query'];
@@ -81,8 +81,8 @@ function translate(e) {
     youdaoWindow.style.position = "fixed";
     youdaoWindow.style.background = "lightblue";
     youdaoWindow.style.borderRadius = "5px";
-    youdaoWindow.style.boxShadow = "0 0 5px 0"
-    youdaoWindow.style.opacity = "0.9"
+    youdaoWindow.style.boxShadow = "0 0 5px 0";
+    youdaoWindow.style.opacity = "0.9";
     youdaoWindow.style.width = "200px";
     youdaoWindow.style.wordWrap = "break-word";
     youdaoWindow.style.left = mx + 10 + "px";
@@ -95,7 +95,7 @@ function translate(e) {
       youdaoWindow.style.top = my + 10 + "px";
     }
     youdaoWindow.style.padding = "5px";
-    youdaoWindow.style.zIndex = '999999'
+    youdaoWindow.style.zIndex = '999999';
 
     function word() {
 
@@ -109,8 +109,8 @@ function translate(e) {
           source.start(0);
         }
 
-        var context = new AudioContext()
-        var soundUrl = `https://dict.youdao.com/dictvoice?type=2&audio=${word}`
+        var context = new AudioContext();
+        var soundUrl = `https://dict.youdao.com/dictvoice?type=2&audio=${word}`;
         var p = new Promise(function(resolve, reject) {
           var ret = GM_xmlhttpRequest({
             method: "GET",
@@ -120,7 +120,7 @@ function translate(e) {
               try {
                 context.decodeAudioData(res.response, function(buffer) {
                   resolve(buffer);
-                })
+                });
               } catch(e) {
                 reject(e);
               }
@@ -134,15 +134,15 @@ function translate(e) {
 
       var basic = dictJSON['basic'];
       var header = document.createElement('p');
-      // header 
-      var span = document.createElement('span')
+      // header
+      var span = document.createElement('span');
       span.innerHTML = query;
-      header.appendChild(span)
+      header.appendChild(span);
       // phonetic if there is
       var phonetic = basic['phonetic'];
       if (phonetic) {
-        var phoneticNode = document.createElement('span')
-        phoneticNode.innerHTML = '[' + phonetic + ']'
+        var phoneticNode = document.createElement('span');
+        phoneticNode.innerHTML = '[' + phonetic + ']';
         phoneticNode.style.cursor = "pointer";
         header.appendChild(phoneticNode);
         var playLogo = document.createElement('span');
@@ -160,7 +160,7 @@ function translate(e) {
       span.style.color = "black";
 
       youdaoWindow.appendChild(header);
-      var hr = document.createElement('hr')
+      var hr = document.createElement('hr');
       hr.style.margin = "0";
       hr.style.padding = "0";
       hr.style.height = "1px";
@@ -179,7 +179,7 @@ function translate(e) {
         li.style.color = "inherit";
         li.appendChild(document.createTextNode(trans));
         ul.appendChild(li);
-      })
+      });
       youdaoWindow.appendChild(ul);
 
     }
@@ -198,14 +198,14 @@ function translate(e) {
         li.style.color = "inherit";
         li.appendChild(document.createTextNode(trans));
         ul.appendChild(li);
-      })
+      });
       youdaoWindow.appendChild(ul);
     }
   }
 
 
   function translate(word, ts) {
-    var reqUrl = `http://fanyi.youdao.com/openapi.do?type=data&doctype=json&version=1.1&relatedUrl=http%3A%2F%2Ffanyi.youdao.com%2F%23&keyfrom=fanyiweb&key=null&translate=on&q=${word}&ts=${ts}`
+    var reqUrl = `http://fanyi.youdao.com/openapi.do?type=data&doctype=json&version=1.1&relatedUrl=http%3A%2F%2Ffanyi.youdao.com%2F%23&keyfrom=fanyiweb&key=null&translate=on&q=${word}&ts=${ts}`;
     //console.log("request url: ", reqUrl);
     var ret = GM_xmlhttpRequest({
       method: "GET",
