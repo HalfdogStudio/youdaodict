@@ -37,7 +37,7 @@ function translate(e) {
   var selectObj = document.getSelection();
 
   // if #text node
-  if (selectObj.anchorNode.nodeType == 3) {
+  if (selectObj.anchorNode && selectObj.anchorNode.nodeType == 3) {
     //GM_log(selectObj.anchorNode.nodeType.toString());
     var word = selectObj.toString();
     if (word == "") {
