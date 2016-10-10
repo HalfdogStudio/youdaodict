@@ -2,7 +2,7 @@
 // @id             youdaodict-greasemonkey-reverland-2015-09-26
 // @name           youdaodict
 // @name:zh-CN     有道取词
-// @version        1.3
+// @version        1.4
 // @namespace      youdao
 // @author         Liu Yuyang(sa@linuxer.me)
 // @description    Translate any text selected into a tooltip
