@@ -3,7 +3,7 @@
 // @name           youdaodict
 // @name:zh-CN     有道取词
 // @version        1.4
-// @namespace      youdao
+// @namespace      https://github.com/HalfdogStudio/youdaodict
 // @author         Liu Yuyang(sa@linuxer.me)
 // @description    Translate any text selected into a tooltip
 // @description:zh-cn    一个可以在浏览器中自由使用的屏幕取词脚本
