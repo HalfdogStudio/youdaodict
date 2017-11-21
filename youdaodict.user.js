@@ -2,13 +2,15 @@
 // @id             youdaodict-greasemonkey-reverland-2015-09-26
 // @name           youdaodict
 // @name:zh-CN     有道取词
-// @version        1.4
+// @version        2.0
 // @namespace      https://github.com/HalfdogStudio/youdaodict
 // @author         Liu Yuyang(sa@linuxer.me)
 // @description    Translate any text selected into a tooltip
 // @description:zh-cn    一个可以在浏览器中自由使用的屏幕取词脚本
 // @include        *
+// @@require  https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
 // @grant          GM_xmlhttpRequest
+// @grant          GM.xmlHttpRequest
 // ==/UserScript==
 
 window.document.body.addEventListener("mouseup", translate, false);
@@ -112,7 +114,7 @@ function translate(e) {
         var context = new AudioContext();
         var soundUrl = `https://dict.youdao.com/dictvoice?type=2&audio=${word}`;
         var p = new Promise(function(resolve, reject) {
-          var ret = GM_xmlhttpRequest({
+          var ret = GM.xmlHttpRequest({
             method: "GET",
             url: soundUrl,
             responseType: 'arraybuffer',
@@ -208,7 +210,7 @@ function translate(e) {
   function translate(word, ts) {
     var reqUrl = `http://fanyi.youdao.com/openapi.do?type=data&doctype=json&version=1.1&relatedUrl=http%3A%2F%2Ffanyi.youdao.com%2F%23&keyfrom=fanyiweb&key=null&translate=on&q=${word}&ts=${ts}`;
     //console.log("request url: ", reqUrl);
-    var ret = GM_xmlhttpRequest({
+    var ret = GM.xmlHttpRequest({
       method: "GET",
       url: reqUrl,
       headers: {"Accept": "application/json"},  // can be omitted...
@@ -226,3 +228,4 @@ function translate(e) {
     });
   }
 }
+
